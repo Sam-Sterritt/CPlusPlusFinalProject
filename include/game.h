@@ -32,6 +32,7 @@ public:
   void setPlayer(Player player);
 
   double getPercent();
+  void end(double duration);
 };
 
 #endif //CPLUSPLUSFINALPROJECT_GAME_H

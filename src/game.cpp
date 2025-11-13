@@ -67,6 +67,40 @@ void Game::setUp() {
   }
 }
 
+void Game::end(double duration) {
+  double penalty = static_cast<int>(player->getScore() * percent_red);
+  int finalScore = static_cast<int>(player->getScore() - penalty);
+
+  std::cout<<"Congrats "<< player->getName() << "! You finished in " << duration << " seconds." << std::endl;
+  std::cout << "Time penalty (" << (percent_red * 100)
+              << "% of points = -" << penalty << ")\n";
+  std::cout << "Final Score: " << finalScore << " points!" << std::endl;
+
+  char rank;
+
+  if (finalScore >= 10 && duration <= 60)
+    rank = 'A';
+  else if (finalScore >= 5 && duration <= 120)
+    rank = 'B';
+  else if (finalScore >= 0 && duration <= 180)
+    rank = 'C';
+  else
+    rank = 'D';
+
+  std::cout << "Your Rank: " << rank << std::endl;
+
+  if (rank == 'A')
+    std::cout << "Incredible! You mastered the grid!" << std::endl;
+  else if (rank == 'B')
+    std::cout << "Great job — solid performance!" << std::endl;
+  else if (rank == 'C')
+    std::cout << "Not bad! A little more speed and precision next time." << std::endl;
+  else if (rank == 'D')
+    std::cout << "You made it... barely! Try improving your time or rolls." << std::endl;
+
+  player->addScore(-player->getScore()); //Reset in case of next game.
+}
+
 void Game::play() {
   start_time = std::clock();
   bool finished = false;
@@ -117,15 +151,7 @@ void Game::play() {
   end_time = std::clock();
   double duration = double(end_time - start_time)/ CLOCKS_PER_SEC;
 
-  double penalty = static_cast<int>(player->getScore() * percent_red);
-  int finalScore = static_cast<int>(player->getScore() - penalty);
-
-  std::cout<<"Congrats "<< player->getName() << "! You finished in " << duration << " seconds." << std::endl;
-  std::cout << "Time penalty (" << (percent_red * 100)
-              << "% of points = -" << penalty << ")\n";
-  std::cout << "Final Score: " << finalScore << " points!" << std::endl;
-
-  player->addScore(-player->getScore()); //Reset in case of next game.
+  end(duration);
 }
 
 void Game::setGrid() {
