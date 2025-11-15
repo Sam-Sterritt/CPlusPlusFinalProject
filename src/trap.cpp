@@ -8,7 +8,7 @@
 #include <vector>
 #include "../include/diceRoller.h"
 
-Trap::Trap(int r, int col) : Entity(r, col, "T") {}
+Trap::Trap(int r, int col) : Obstacle(r, col, "T") {}
 
 void Trap::onEncounter(std::shared_ptr<Player> p) {
   std::cout << "You encountered a trap! To get out you need to roll a 4 or more" << std::endl;

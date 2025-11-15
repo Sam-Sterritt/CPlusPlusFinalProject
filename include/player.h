@@ -8,6 +8,10 @@
 #include <string>
 #include "entity.h"
 
+/// @brief Represents the player in the game.
+///
+/// Inherits from Entity and adds player-specific attributes such as name and score.
+/// Provides methods to get and update the player's score and manage their name.
 class Player : public Entity {
 private:
   std:: string name;

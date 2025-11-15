@@ -7,17 +7,22 @@
 
 #include <string>
 
+/// @brief Abstract base class representing any entity that can exist on the grid.
+///
+/// This class is designed to be inherited by Player, Obstacle, or other entities.
+/// It stores basic positional information (row and column) and a symbol representing
+/// the entity visually on the grid. Making this class abstract ensures that only
+/// derived, concrete entities can be instantiated.
 class Entity {
-  ///This is an abstract class that will be the base class for
-  ///obstacle and player. This is used to that the grid can hold
-  ///both an obstacle and a player at the same time.
 protected:
   int row, col;
-  std::string symbol;
+  std::string symbol; ///< Symbol representing the entity on the grid
 public:
   Entity(int r, int c, std::string s);
   virtual ~Entity() = default;
 
+  /// @brief Get the symbol of the entity
+  /// @return The symbol as a string
   virtual std::string getSymbol() const;
 
   virtual void setRow(int r);

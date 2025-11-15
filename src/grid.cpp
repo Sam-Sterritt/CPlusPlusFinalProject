@@ -9,6 +9,11 @@
 #include <random>
 #include <iostream>
 
+/// @brief Constructor for the Grid class
+/// @param rows Number of rows in the grid
+/// @param cols Number of columns in the grid
+///
+/// Initializes a 2D grid of shared pointers to Entity, all initially nullptr.
 Grid::Grid(int rows, int cols)
       : rows(rows), cols(cols), data(rows, std::vector<std::shared_ptr<Entity>>(cols, nullptr)) {};
 
@@ -20,6 +25,11 @@ int Grid::getRows() const{
       return Grid::rows;
 }
 
+/// @brief Access the entity at a given location
+/// @param r Row index
+/// @param c Column index
+/// @return Reference to the entity at the position
+/// @throws std::runtime_error if no entity exists at that location
 Entity& Grid::at(int r, int c) {
       if (data[r][c] == nullptr) {
             throw std::runtime_error("No entity at that location!");
@@ -27,6 +37,9 @@ Entity& Grid::at(int r, int c) {
       return *(data[r][c]);
 }
 
+/// @brief Display the grid to the console
+///
+/// Prints each cell: entity symbol if occupied, or "." if empty.
 void Grid::display() {
       for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -47,6 +60,11 @@ void Grid::setElement(std::shared_ptr<Entity> e, int r, int c) {
       e->setCol(c);
 }
 
+/// @brief Move a player a number of spaces on the grid
+/// @param p Shared pointer to the player
+/// @param numSpaces Number of spaces to move (can be negative)
+///
+/// Handles obstacle encounters (Trap or Force), updates player position, and clears obstacles as needed.
 void Grid::movePlayer(std::shared_ptr<Player> p, int numSpaces) {
       // Remove player from current cell
       int oldRow = p->getRow();
@@ -85,11 +103,12 @@ void Grid::movePlayer(std::shared_ptr<Player> p, int numSpaces) {
       data[newRow][newCol] = p;
 }
 
-
+/// @return True if the cell has no entity, false otherwise
 bool Grid::isEmpty(int r, int c) const {
       return data[r][c] == nullptr;
 }
 
+/// Randomly places obstacles within the grid while avoiding edges and fills the last cell with the goal.
 void Grid::fill(int numTraps, int numForces) {
       int i = 0;
       while (i < numTraps) {
@@ -115,6 +134,7 @@ void Grid::fill(int numTraps, int numForces) {
             }
       }
 
+      // Place goal in bottom-right corner
       data[rows-1][cols-1] = std::make_shared<Goal>(rows-1, cols-1);
 }
 

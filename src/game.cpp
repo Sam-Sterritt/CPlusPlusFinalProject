@@ -6,6 +6,11 @@
 #include <ctime>
 #include <iostream>
 
+/// @brief Constructor for the Game class
+/// @param p Shared pointer to the Player object
+///
+/// Initializes the game with default values and associates the player.
+/// Dice is initialized with range 1–6. Grid is initialized empty (0x0).
 Game::Game(std::shared_ptr<Player> p)
     : rows(0),
       cols(0),
@@ -34,6 +39,7 @@ void Game::introduce() {
                "You can also choose to use your points to skip your position forward in the game (aka skip over obstacles!)" <<std::endl;
 }
 
+/// @brief Sets up the game level, grid size, and number of obstacles based on player input
 void Game::setUp() {
   std::string level;
   std::cout << "Select the level you would like: (E)asy, (M)edium, (H)ard" << std::endl;
@@ -67,6 +73,8 @@ void Game::setUp() {
   }
 }
 
+/// @brief Ends the game and calculates final score and rank
+/// @param duration Duration of the game in seconds
 void Game::end(double duration) {
   double penalty = static_cast<int>(player->getScore() * percent_red);
   int finalScore = static_cast<int>(player->getScore() - penalty);
@@ -78,11 +86,11 @@ void Game::end(double duration) {
 
   char rank;
 
-  if (finalScore >= 10 && duration <= 60)
+  if (finalScore >= 5 && duration <= 60)
     rank = 'A';
-  else if (finalScore >= 5 && duration <= 120)
+  else if (finalScore >= 3 && duration <= 120)
     rank = 'B';
-  else if (finalScore >= 0 && duration <= 180)
+  else if (finalScore == 0 && duration <= 180)
     rank = 'C';
   else
     rank = 'D';
@@ -108,28 +116,31 @@ void Game::play() {
   while (!finished) {
     std::cout<<"\nCurrent Score: " << player->getScore() << std::endl;
 
+    // Allow the player to skip spaces if they have enough points
     if (player->getScore() >= 3) {
       std::string choice;
       std::cout << "Would you like to spend points to skip forward? (Y/N)" << std::endl;
       std::cin >> choice;
-      while (choice == "Y" || choice == "y") {
-        int skip;
-        std::cout<<"How many spaces would you like to skip? You loose 3 points per skip" << std::endl;
-        std::cin >> skip;
-
-        if (skip*3 > player->getScore()) {
-          std::cout<<"You can only move the number of points you have/3. Enter a new number of spaces: " << std::endl;
+      int skip = -1;
+      if (choice == "Y" || choice == "y"){
+        while (skip == -1){
+          std::cout<<"How many spaces would you like to skip? You loose 3 points per skip" << std::endl;
           std::cin >> skip;
-        } else {
-          grid.movePlayer(player,skip);
-          player->addScore(-3*skip);
-          grid.display();
-          choice = "n";
+
+          if (skip*3 > player->getScore()) {
+            std::cout << "Invalid skip number" << std::endl;
+            skip = -1;
+          }
         }
+        grid.movePlayer(player,skip);
+        player->addScore(-3*skip);
+        grid.display();
+        choice = "n";
       }
     }
     int roll = dice.roll();
 
+    // Apply scoring rules based on dice roll
     if (roll == 6) {
       player->addScore(1);
       std::cout << "Wow! You rolled a 6! +1 point" << std::endl;
@@ -142,6 +153,7 @@ void Game::play() {
     grid.movePlayer(player,roll);
     grid.display();
 
+    // Check if player has reached the goal (bottom-right corner)
     if (player->getRow() == grid.getRows() - 1 && player->getCol() == grid.getCols() - 1) {
       finished = true;
     }
@@ -154,6 +166,7 @@ void Game::play() {
   end(duration);
 }
 
+/// @brief Sets up the grid with obstacles and places the player at the start
 void Game::setGrid() {
   Grid grid(rows, cols);
   grid.fill(numTraps, numForces);
