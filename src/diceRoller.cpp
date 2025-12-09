@@ -16,7 +16,7 @@ int DiceRoller::roll() {
   std::cin>>input;
 
   // Keep prompting until the user enters 'R'
-  while (input != "R") {
+  while (input != "R" && input != "r") {
     std::cout<<"You should roll the dice, time is ticking!" << std::endl;
     std::cin >> input;
   }

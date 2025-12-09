@@ -6,29 +6,30 @@ A simple console-based C++ game where a player navigates a grid, encounters trap
 - [Description](#description)
 - [Features](#features)
 - [Dependencies](#dependencies)
+- [Compiler Used](#compiler-used)
 - [Build Instructions](#build-instructions)
-
-[//]: # (- [Run Instructions]&#40;#run-instructions&#41;)
-
-[//]: # (- [Testing]&#40;#testing&#41;)
+- [Testing](#testing)
+- [Example Gameplay](#example-gameplay)
 
 [//]: # (- [Gameplay Overview]&#40;#gameplay-overview&#41;)
 
 ---
 
 ## Description
-The game consists of a player (`P`) navigating a grid filled with obstacles:
-- **Traps (`T`)**: Require a dice roll of 4 or more to remove. Rolling a 6 moves you forward 1 space.
+The game consists of a player (`P`) navigating a grid. The player can choose their name, and the difficulty of the game. 
+The grid will be filled with obstacles:
+- **Traps (`T`)**: Requires a dice roll of 4 or more to escape.
 - **Forces (`F`)**: Push the player back 2 spaces when encountered.
 - **Goal (`*`)**: The final destination of the grid.
 
 The player also has a score
 - Rolling a 1 subtracts one point from the score
-- Rolling a 6 adds one point to the score
-- Escaping a trap in 3 or less tries adds two points
+- Rolling a 6 adds two points to the score
+- Escaping a trap in 3 or less tries adds three points
 
-The player's objective is to reach the goal as quickly as possible while maximizing points. There is a rank system at the end
-to help determine player success. 
+The player's objective is to reach the goal as quickly as possible while maximizing points. A longer time deducts points 
+at the end of the game. There is a rank system at the end to help determine player success. As a player, you have the choice 
+to use points to skip forward places in the grid. Each move takes one point.
 
 ---
 
@@ -53,10 +54,57 @@ to help determine player success.
 
 ## Build Instructions
 
-[//]: # (1. **Clone the repository**)
+### Prerequisites
+- **C++ Compiler:** GCC 13.2.0 (MinGW-builds) or any C++14 compatible compiler  
+  Verify with:
+  ```bash
+  g++ --version
 
-[//]: # (```bash)
+- **Cmake:** Cmake version 4.0+
+  Verify with:
+  ```bash
+  cmake --version
 
-[//]: # (git clone <repository_url>)
+- If you do not have cmake installed, go to this link: https://cmake.org/download/
+- Choose eh Windows x64 Installer under "Binary Distibutions"
+- Don't choose the ZIP folder
+- After cmake installs, restart the powershell/terminal and try again
 
-[//]: # (cd <repository_directory>)
+### Steps to Build
+1. Clone the repository
+   ```bash
+   git clone https://github.com/Sam-Sterritt/CPlusPlusFinalProject.git
+   cd CPlusPlusFinalProject
+2. Create build directory and navigate to it
+   ```bash
+   mkdir build
+   cd build
+3. Generate build files using CMake:
+   ```bash
+   cmake -G "MinGW Makefiles" ..
+4. Build the project
+   ```bash
+   cmake --build .
+
+### Steps to Run
+  FROM YOUR BUILD DIRECTORY
+
+- Windows
+  ```bash
+  ./CPlusPlusFinalProject.exe
+
+- Linux/macOS
+  ```bash
+  ./CPlusPlusFinalProject
+
+---
+
+## Testing
+
+The game was not accommodating to test cases, and so testing was done manually through playing the game.
+This included passing in invalid inputs, testing mathematical processes, and more. 
+
+---
+
+## Example Gameplay
+

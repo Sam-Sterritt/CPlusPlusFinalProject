@@ -21,5 +21,5 @@ add_executable(CPlusPlusFinalProject
         src/goal.cpp
         include/game.h
         src/game.cpp
-        test/test.cpp
+        include/obstacle.h
 )

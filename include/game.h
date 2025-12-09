@@ -25,6 +25,7 @@ private:
   clock_t start_time;          ///< Game start time
   clock_t end_time;            ///< Game end time
   double percent_red;          ///< Tracks percentage of points to be deleted at end of game. Changes per level
+  std::string level;           ///< Tranks the level of the game
 
 public:
   Game( std::shared_ptr<Player> p);

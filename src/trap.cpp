@@ -40,8 +40,8 @@ void Trap::onEncounter(std::shared_ptr<Player> p) {
       std::cout << "You escaped!" << std::endl;
       trapped = false;
       if (num_rolls <= 3) {
-        std::cout <<"You escaped the trap quickly! +2 points" << std::endl;
-        p->addScore(2);
+        std::cout <<"You escaped the trap quickly! +3 points" << std::endl;
+        p->addScore(3);
       }
     } else {
       std::cout << "You are still trapped" << std::endl;

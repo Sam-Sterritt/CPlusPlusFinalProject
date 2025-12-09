@@ -30,54 +30,57 @@ void Game::introduce() {
                 "you roll, you will move the number of spaces that the dice says. "
                 "If you run into a force(F), you will move back two spaces and re- start "
                 "your turn. If you hit a trap(T), you must roll a 4 or more to get the "
-                "obstacle to go away. If you roll a 6, the T goes away and you move "
-                "forward one space. The end is marked by a star." << std::endl;
+                "obstacle to go away. The end is marked by a star." << std::endl;
 
-  std::cout << "You can score a point by rolling a 6, and you can score 2 points by escaping traps quickly (<2 rolls). You loose "
-               "two points by rolling a 1. At the end of the game, a percent of the time you took to complete"
-               "the game will be subtracted from your total points. This percentage changes per level. E -> 5%, M -> 10%, H -> 20%. "
-               "You can also choose to use your points to skip your position forward in the game (aka skip over obstacles!)" <<std::endl;
+  std::cout << "You can score 2 points by rolling a 6, and you can score 3 points by escaping traps quickly (<=3 rolls). You loose "
+               "one point by rolling a 1. At the end of the game, a percent of the time you took to complete"
+               "the game will be subtracted from your total points. This percentage changes per level. E -> 0.5%, M -> 5%, H -> 10%. "
+               "You can also choose to use your points to skip your position forward in the game (aka skip over obstacles!) It costs"
+               " one point per position you skip" <<std::endl;
 }
 
 /// @brief Sets up the game level, grid size, and number of obstacles based on player input
 void Game::setUp() {
-  std::string level;
+  std::string l;
   std::cout << "Select the level you would like: (E)asy, (M)edium, (H)ard" << std::endl;
-  std::cin >> level;
+  std::cin >> l;
 
-  if (level == "E" || level == "e") {
+  if (l == "E" || l == "e") {
     //A 5x2 grid, with ~%2 traps and ~%10 forces
+    level = "E";
     rows = 5;
     cols = 3;
     numForces = 1;
     numTraps = 1;
-    percent_red = 0.05;
+    percent_red = 0.005;
   }
 
-  else if (level == "M" || level == "m") {
+  else if (l == "M" || l == "m") {
     //A 10x5 grid, with %5 traps and %10 forces
+    level = "M";
     rows = 10;
     cols = 5;
     numForces = 5;
     numTraps = 3;
-    percent_red = 0.1;
+    percent_red = 0.05;
   }
 
-  else if (level == "H" || level == "h") {
+  else if (l == "H" || l == "h") {
     //A 20x15 grid, with %10 traps and %15 forces
+    level = "H";
     rows = 20;
     cols = 15;
     numForces = 45;
     numTraps = 30;
-    percent_red = 0.2;
+    percent_red = 0.1;
   }
 }
 
 /// @brief Ends the game and calculates final score and rank
 /// @param duration Duration of the game in seconds
 void Game::end(double duration) {
-  double penalty = static_cast<int>(player->getScore() * percent_red);
-  int finalScore = static_cast<int>(player->getScore() - penalty);
+  double penalty = duration * percent_red;
+  double finalScore = player->getScore() - penalty;
 
   std::cout<<"Congrats "<< player->getName() << "! You finished in " << duration << " seconds." << std::endl;
   std::cout << "Time penalty (" << (percent_red * 100)
@@ -86,24 +89,51 @@ void Game::end(double duration) {
 
   char rank;
 
-  if (finalScore >= 5 && duration <= 60)
+  if (finalScore >= 8){
     rank = 'A';
-  else if (finalScore >= 3 && duration <= 120)
-    rank = 'B';
-  else if (finalScore == 0 && duration <= 180)
-    rank = 'C';
-  else
-    rank = 'D';
+  }
+  else if (finalScore >= 5) {
+    if (level == "H") {
+      rank = 'B';
+    } else {
+      rank = 'A';
+    }
+  }
+  else if (finalScore >= 3) {
+    if (level == "E") {
+      rank = 'A';
+    } else if (level == "M") {
+      rank = 'B';
+    } else {
+      rank = 'C';
+    }
+  }
+  else if (finalScore >= 0) {
+    if (level == "E") {
+      rank = 'B';
+    }else if (level == "M") {
+      rank = 'C';
+    } else {
+      rank = 'D';
+    }
+  }
+  else {
+    if (level == "E") {
+      rank = 'C';
+    } else {
+      rank = 'D';
+    }
+  }
 
   std::cout << "Your Rank: " << rank << std::endl;
 
   if (rank == 'A')
     std::cout << "Incredible! You mastered the grid!" << std::endl;
   else if (rank == 'B')
-    std::cout << "Great job — solid performance!" << std::endl;
+    std::cout << "Great job, solid performance!" << std::endl;
   else if (rank == 'C')
     std::cout << "Not bad! A little more speed and precision next time." << std::endl;
-  else if (rank == 'D')
+  else
     std::cout << "You made it... barely! Try improving your time or rolls." << std::endl;
 
   player->addScore(-player->getScore()); //Reset in case of next game.
@@ -117,23 +147,23 @@ void Game::play() {
     std::cout<<"\nCurrent Score: " << player->getScore() << std::endl;
 
     // Allow the player to skip spaces if they have enough points
-    if (player->getScore() >= 3) {
+    if (player->getScore() > 0) {
       std::string choice;
       std::cout << "Would you like to spend points to skip forward? (Y/N)" << std::endl;
       std::cin >> choice;
       int skip = -1;
       if (choice == "Y" || choice == "y"){
         while (skip == -1){
-          std::cout<<"How many spaces would you like to skip? You loose 3 points per skip" << std::endl;
+          std::cout<<"How many spaces would you like to skip? You loose a point per skip" << std::endl;
           std::cin >> skip;
 
-          if (skip*3 > player->getScore()) {
+          if (skip > player->getScore()) {
             std::cout << "Invalid skip number" << std::endl;
             skip = -1;
           }
         }
         grid.movePlayer(player,skip);
-        player->addScore(-3*skip);
+        player->addScore(-1*skip);
         grid.display();
         choice = "n";
       }
@@ -142,8 +172,8 @@ void Game::play() {
 
     // Apply scoring rules based on dice roll
     if (roll == 6) {
-      player->addScore(1);
-      std::cout << "Wow! You rolled a 6! +1 point" << std::endl;
+      player->addScore(2);
+      std::cout << "Wow! You rolled a 6! +2 point" << std::endl;
     }
     if (roll == 1) {
       player->addScore(-1);
