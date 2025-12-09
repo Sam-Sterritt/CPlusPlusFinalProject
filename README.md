@@ -6,12 +6,9 @@ A simple console-based C++ game where a player navigates a grid, encounters trap
 - [Description](#description)
 - [Features](#features)
 - [Dependencies](#dependencies)
-- [Compiler Used](#compiler-used)
-- [Build Instructions](#build-instructions)
+- [Build and Run Instructions](#build-and-run-instructions)
 - [Testing](#testing)
 - [Example Gameplay](#example-gameplay)
-
-[//]: # (- [Gameplay Overview]&#40;#gameplay-overview&#41;)
 
 ---
 
@@ -52,7 +49,7 @@ to use points to skip forward places in the grid. Each move takes one point.
 
 ---
 
-## Build Instructions
+## Build and Run Instructions
 
 ### Prerequisites
 - **C++ Compiler:** GCC 13.2.0 (MinGW-builds) or any C++14 compatible compiler  
@@ -108,3 +105,29 @@ This included passing in invalid inputs, testing mathematical processes, and mor
 
 ## Example Gameplay
 
+![img.png](img.png)
+- The program explains the rules to the game, and prompts for a name to be entered
+
+![img_1.png](img_1.png)
+- A name is entered, and a difficulty level is selected.
+- Then the game starts, displays the grid, and prompts for the first roll
+
+![img_2.png](img_2.png)
+- The player types r to roll, they roll a 6 and so are rewarded with two points. 
+- The player then selects to use a point to advance to the next space.
+- The player selects to move forward one place
+
+![img_3.png](img_3.png)
+- The player moved into a force block, and is pushed back two spaces
+- They roll the dice again and choose not to use points to skip forward
+
+![img_4.png](img_4.png)
+- The player rolls their dice, and rolls a one. They are penalized for it
+- The player also rolls into a trap, and gets the correct action for that
+- The player rolls to escape, and roll a 5, meeting the requirement to escape
+- Because the player escaped in <= 3 rolls, they get rewarded with 3 points
+
+![img_5.png](img_5.png)
+![img_6.png](img_6.png)
+- The player continues to play, until the end is reached
+- Their results are displayed

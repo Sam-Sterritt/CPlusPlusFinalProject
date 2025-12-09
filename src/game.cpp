@@ -26,17 +26,17 @@ Game::Game(std::shared_ptr<Player> p)
 
 void Game::introduce() {
   std::cout <<  "You are a player P. Your goal is to make it through the grid as "
-                "fast as possible with the most points scored. In order to move, you must roll a dice. After "
+                "fast as possible with the most points scored.\nIn order to move, you must roll a dice. After "
                 "you roll, you will move the number of spaces that the dice says. "
-                "If you run into a force(F), you will move back two spaces and re- start "
-                "your turn. If you hit a trap(T), you must roll a 4 or more to get the "
-                "obstacle to go away. The end is marked by a star." << std::endl;
+                "\nIf you run into a force(F), you will move back two spaces and re- start "
+                "your turn.\nIf you hit a trap(T), you must roll a 4 or more to get the "
+                "obstacle to go away. \nThe end is marked by a star.\n" << std::endl;
 
-  std::cout << "You can score 2 points by rolling a 6, and you can score 3 points by escaping traps quickly (<=3 rolls). You loose "
+  std::cout << "You can score 2 points by rolling a 6, and you can score 3 points by escaping traps quickly (<=3 rolls). \nYou loose "
                "one point by rolling a 1. At the end of the game, a percent of the time you took to complete"
-               "the game will be subtracted from your total points. This percentage changes per level. E -> 0.5%, M -> 5%, H -> 10%. "
-               "You can also choose to use your points to skip your position forward in the game (aka skip over obstacles!) It costs"
-               " one point per position you skip" <<std::endl;
+               " \nthe game will be subtracted from your total points. This percentage changes per level. \nE -> 0.5%, \nM -> 5%, \nH -> 10%. "
+               "\n\nYou can also choose to use your points to skip your position forward in the game (aka skip over obstacles!) It costs"
+               "one point per position you skip\n" <<std::endl;
 }
 
 /// @brief Sets up the game level, grid size, and number of obstacles based on player input
